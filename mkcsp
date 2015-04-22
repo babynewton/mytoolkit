@@ -3,7 +3,7 @@
 CSC=cscope
 CSFILES=$CSC.files
 CSOUT=$CSC.out
-EXTS="[cC] [cC][cC] [cC][pP][pP] [hH] [hH][pP][pP] php PHP js JS java JAVA lua pl make mak sh"
+EXTS="[cC] [hH] [cC][cC] [cC][pP][pP] [hH][hH] [hH][pP][pP] php PHP js JS java JAVA lua pl make mak sh"
 FILES="Makefile CMakeLists.txt"
 
 rm -f $CSFILES $CSOUT
