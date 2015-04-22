@@ -1,0 +1,6 @@
+#!/bin/bash
+
+DIR=.
+test -n "$1" && DIR=$1
+
+find $DIR -type f -exec du -sb {} \; | awk ' { sum+= $1; ++n } END { print sum/n/1024 } '

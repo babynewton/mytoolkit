@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for FILE in `find . -name "*.pcap"`
+do
+#	tcpdump -qns 0 -A -r $FILE > $FILE.txt
+	tcpdump -A -r $FILE > $FILE.dump
+	grep "\[[P]*\..*, seq" < $FILE.dump > $FILE.txt
+	echo "$FILE.dump >> $FILE.txt"
+done

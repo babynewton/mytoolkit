@@ -1,0 +1,52 @@
+#!/usr/bin/python
+
+import sys
+import struct
+
+me = None
+pcm_path = None
+txt_path = None
+
+def show_help():
+	print 'pcm2txt v1.0 by Newton Kim'
+	print 'Usage: pcm2txt [option]... pcm_file txt_file'
+	print 'Options:'
+	print '-h, --help  shows this help screen'
+	
+if len(sys.argv) < 2:
+	show_help()
+	exit(0)
+
+for arg in sys.argv:
+	if arg == "-h" or arg == "--help":
+		show_help()
+		exit(0)
+	elif arg[0] == '-':
+		print 'invalid option ' + arg
+		exit(1)
+	elif me == None:
+		me = arg
+	elif pcm_path == None:
+		pcm_path = arg
+	elif txt_path == None:
+		txt_path = arg
+	else:
+		print 'invalid argument ' + arg
+		exit(1)
+
+fin = open(pcm_path, 'rb')
+if fin == None:
+	print pcm_path + ' is not available.'
+	exit(1)
+fout = open(txt_path, 'wb')
+if fin == None:
+	print txt_path + ' is not available.'
+	exit(1)
+
+while True:
+	pcm_data = fin.read(2)
+	if not pcm_data: break
+	txt_data, = struct.unpack("h", pcm_data)
+	fout.write(str(txt_data) + '\n')
+fin.close()
+fout.close()

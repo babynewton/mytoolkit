@@ -1,0 +1,64 @@
+#!/bin/bash
+
+TARGET=help
+PLAYER=mplayer
+STATE=none
+
+RATE=16000
+CHANNELS=2
+SAMPLESIZE=2
+
+for ARG in $@
+do
+	case $ARG in
+		-sr | -c | -si)
+			STATE=$ARG
+			;;
+		-*)
+			echo 'Unrecognized option $ARG'
+			exit 1
+			;;
+		*)
+			case $STATE in
+				-sr)
+					RATE=$ARG
+					;;
+				-c)	
+					CHANNELS=$ARG
+					;;
+				-si)
+					SAMPLESIZE=$ARG
+					;;
+				*)
+					TARGET=$ARG
+					;;
+			esac
+			;;
+	esac
+done
+
+if [ ! -n "$TARGET" ]
+then
+	echo "No file has been specified."
+	exit 1
+fi
+
+EXT=${TARGET##*.}
+case $EXT in
+	raw|pcm|pcm16k)
+		ARG="-rawaudio samplesize=$SAMPLESIZE:channels=$CHANNELS:rate=$RATE -demuxer rawaudio"
+		;;
+	spx|wspx8)
+		;;
+	help)
+		echo "Usage: ./play [target]"
+		echo "Target:"
+		echo "    help shows this help screen"
+		exit 0
+		;;
+	*)
+		echo "Unrecognized target $1"
+		exit 1
+		;;
+esac
+$PLAYER $ARG $TARGET
