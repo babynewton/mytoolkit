@@ -1,0 +1,12 @@
+#!/bin/bash
+
+PLOTTER=gnuplot
+for txt in `ls *.txt`
+do
+	test ! -z "$ARGUMENTS" && ARGUMENTS+=", "
+	ARGUMENTS+="\"$txt\" with lines"
+done
+ARGUMENTS+=";pause -1"
+
+echo "$PLOTTER -e \"$SCRIPT $ARGUMENTS\""
+$PLOTTER -e "plot $ARGUMENTS"
