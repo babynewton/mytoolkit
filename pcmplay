@@ -45,7 +45,7 @@ fi
 
 EXT=${TARGET##*.}
 case $EXT in
-	raw|pcm|pcm16k)
+	bin|raw|pcm|pcm16k)
 		ARG="-rawaudio samplesize=$SAMPLESIZE:channels=$CHANNELS:rate=$RATE -demuxer rawaudio"
 		;;
 	spx|wspx8)
