@@ -1,7 +1,28 @@
 #!/bin/bash
 
+for ARG in $@
+do
+	case $ARG in
+		*mkplot)
+			continue
+			;;
+		*)
+			if [ -d "$ARG" ]
+			then
+				txts+=`find $ARG -name "*.txt"`
+				txts+=" "
+			else
+				txts+="$ARG "
+			fi
+	esac
+done
+
+if [ ! -n "$txts" ]
+then
+	txts=`find . -name "*.txt"`
+fi
 PLOTTER=gnuplot
-for txt in `ls *.txt`
+for txt in $txts
 do
 	test ! -z "$ARGUMENTS" && ARGUMENTS+=", "
 	ARGUMENTS+="\"$txt\" with lines"
