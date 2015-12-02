@@ -1,1 +1,50 @@
 #!/bin/bash
+
+function show_help() {
+	echo sdblog by Newton Kim
+	echo Usage: sdblog [option]... [log file]
+	echo Option:
+	echo "  "-c, --clean  cleans up the log
+	echo "  "-h, --help  shows this help screen
+	echo "  "-v, --view  shows the last log file
+	echo   
+}
+
+if [ ! -n `which sdb` ]
+then
+	echo sdb is not available
+	exit 1
+fi
+
+LOG_NAME=log-`date +%h%dth%Y-%H%M`.txt
+LOG_LNK=log-LATEST.txt
+
+for ARG in $@
+do
+	case $ARG in
+		-c | --clean)
+			sdb dlog clean
+			exit 0
+			;;
+		-h | --help)
+			show_help
+			exit 0
+			;;
+		-v | --view)
+			vi $LOG_LNK
+			exit 0
+			;;
+		-*)
+			echo invalid argument $ARG
+			exit 1
+			;;
+		*)
+			LOG_NAME=$ARG
+			;;
+	esac
+done
+
+echo dlog to  $LOG_NAME from `sdb shell date`
+ln -fs $LOG_NAME $LOG_LNK
+sdb dlog -v threadtime > $LOG_NAME
+exit 0
